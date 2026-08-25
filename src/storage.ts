@@ -1,0 +1,5 @@
+const DB='bonsai-garden-workshop',STORE='pictures';
+function db(){return new Promise<IDBDatabase>((resolve,reject)=>{const req=indexedDB.open(DB,1);req.onupgradeneeded=()=>req.result.createObjectStore(STORE);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+export async function savePicture(id:string,file:File){const d=await db();await new Promise<void>((resolve,reject)=>{const tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).put(file,id);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error)});d.close()}
+export async function loadPictures(ids:string[]){const d=await db();const result=await Promise.all(ids.map(id=>new Promise<{id:string;file:File}|null>((resolve)=>{const req=d.transaction(STORE).objectStore(STORE).get(id);req.onsuccess=()=>resolve(req.result?{id,file:req.result}:null);req.onerror=()=>resolve(null)})));d.close();return result.filter(Boolean) as {id:string;file:File}[]}
+export async function removePicture(id:string){const d=await db();await new Promise<void>(resolve=>{const tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(id);tx.oncomplete=()=>resolve()});d.close()}
