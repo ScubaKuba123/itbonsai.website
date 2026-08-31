@@ -1,5 +1,8 @@
 {
   "rewrites": [
-    {"source": "/garden", "destination": "/garden.html"}
+    {"source": "/garden", "destination": "/garden.html"},
+    {"source": "/prototype", "destination": "/prototype.html"},
+    {"source": "/ygrassil", "destination": "/index.html"},
+    {"source": "/ygrassil/", "destination": "/index.html"}
   ]
 }

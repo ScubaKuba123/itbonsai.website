@@ -1,0 +1,421 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #020202;
+  color: #fff8ef;
+  font-family: "DM Sans", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.studio-hero {
+  --accent: #e8c27b;
+  --position: center;
+  position: relative;
+  width: 100vw;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 54% 42%, color-mix(in srgb, var(--accent), transparent 82%), transparent 28rem),
+    #020202;
+  color: #fff8ef;
+  user-select: none;
+}
+
+.slide-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #050504;
+}
+
+.slide-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--position);
+  opacity: 0.88;
+  filter: saturate(1.04) contrast(1.08);
+  animation: studioReveal 950ms ease-out both;
+}
+
+.slide-grade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 58% 42%, transparent 0 18%, rgba(0, 0, 0, 0.18) 42%, rgba(0, 0, 0, 0.55) 76%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.83) 0%, rgba(0, 0, 0, 0.5) 27%, rgba(0, 0, 0, 0.08) 54%, rgba(0, 0, 0, 0.68) 100%),
+    linear-gradient(0deg, #000 0%, rgba(0, 0, 0, 0.58) 22%, rgba(0, 0, 0, 0.12) 52%, rgba(0, 0, 0, 0.74) 100%);
+}
+
+.slide-grade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image:
+    radial-gradient(circle at 22% 78%, color-mix(in srgb, var(--accent), transparent 28%) 0 1px, transparent 2px),
+    radial-gradient(circle at 74% 35%, color-mix(in srgb, var(--accent), transparent 22%) 0 1px, transparent 2px);
+  background-size: 190px 170px, 250px 220px;
+  pointer-events: none;
+}
+
+.studio-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: clamp(24px, 3.2vw, 52px);
+  color: rgba(255, 248, 239, 0.72);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.studio-brand {
+  color: #fff8ef;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(25px, 2.1vw, 38px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  text-transform: none;
+  text-shadow: 0 18px 50px rgba(0, 0, 0, 0.75);
+}
+
+.studio-nav div {
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 4.2vw, 72px);
+}
+
+.studio-nav a:not(.studio-brand),
+.studio-nav button {
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.studio-nav a:not(.studio-brand):hover,
+.studio-nav button:hover {
+  color: #fff8ef;
+  transform: translateY(-1px);
+}
+
+.studio-nav button {
+  min-width: 172px;
+  height: 52px;
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 18%);
+  border-radius: 2px;
+  color: var(--accent);
+  letter-spacing: 0.22em;
+  background: rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(12px);
+}
+
+.studio-copy {
+  position: absolute;
+  left: clamp(24px, 4vw, 72px);
+  bottom: clamp(84px, 10vh, 128px);
+  z-index: 20;
+  max-width: min(620px, calc(100vw - 48px));
+}
+
+.studio-copy span {
+  display: block;
+  margin-bottom: 18px;
+  color: rgba(255, 248, 239, 0.54);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.studio-copy h1 {
+  max-width: 7.3em;
+  margin: 0;
+  color: #fff8ef;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(56px, 6.8vw, 112px);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.065em;
+  text-shadow: 0 34px 90px rgba(0, 0, 0, 0.86);
+}
+
+.studio-copy p {
+  max-width: 430px;
+  margin: 24px 0 34px;
+  color: rgba(255, 248, 239, 0.76);
+  font-size: clamp(15px, 1.1vw, 18px);
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.studio-copy a {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent), transparent 20%);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    gap 180ms ease;
+}
+
+.studio-copy a:hover {
+  gap: 24px;
+  border-color: #fff8ef;
+  color: #fff8ef;
+}
+
+.studio-copy svg {
+  width: 18px;
+  stroke-width: 1.7;
+}
+
+.quiet-carousel {
+  position: absolute;
+  right: clamp(24px, 4vw, 72px);
+  bottom: clamp(42px, 7vh, 86px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  color: rgba(255, 248, 239, 0.62);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.quiet-carousel span {
+  min-width: 92px;
+  color: #fff8ef;
+  text-align: center;
+}
+
+.quiet-carousel button {
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.quiet-carousel button:hover {
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.slide-dots {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(38px, 6vh, 70px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-50%);
+}
+
+.slide-dots button {
+  position: relative;
+  width: 44px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 248, 239, 0.42);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.slide-dots button::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  width: 28px;
+  height: 1px;
+  background: rgba(255, 248, 239, 0.2);
+  transition:
+    width 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.slide-dots button.active {
+  color: var(--accent);
+}
+
+.slide-dots button.active::after {
+  width: 44px;
+  background: var(--accent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent), transparent 35%);
+}
+
+@keyframes studioReveal {
+  from {
+    opacity: 0;
+    transform: scale(1.035);
+  }
+
+  to {
+    opacity: 0.88;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 900px) {
+  .slide-media img {
+    object-position: 58% center;
+  }
+
+  .studio-nav {
+    padding: 24px 22px;
+  }
+
+  .studio-nav div {
+    display: none;
+  }
+
+  .studio-nav button {
+    min-width: 138px;
+    height: 46px;
+    font-size: 11px;
+  }
+
+  .studio-copy {
+    left: 22px;
+    right: 22px;
+    bottom: 118px;
+  }
+
+  .studio-copy h1 {
+    max-width: 5.4em;
+    font-size: clamp(50px, 14vw, 78px);
+  }
+
+  .studio-copy p {
+    max-width: 360px;
+    margin-top: 20px;
+    margin-bottom: 28px;
+  }
+
+  .quiet-carousel {
+    left: 22px;
+    right: 22px;
+    bottom: 30px;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .slide-dots {
+    left: 22px;
+    bottom: 78px;
+    justify-content: flex-start;
+    transform: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .slide-grade {
+    background:
+      radial-gradient(circle at 62% 36%, transparent 0 20%, rgba(0, 0, 0, 0.22) 45%, rgba(0, 0, 0, 0.68) 82%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.24) 52%, rgba(0, 0, 0, 0.58) 100%),
+      linear-gradient(0deg, #000 0%, rgba(0, 0, 0, 0.5) 32%, rgba(0, 0, 0, 0.16) 60%, rgba(0, 0, 0, 0.76) 100%);
+  }
+
+  .studio-brand {
+    font-size: 24px;
+  }
+
+  .studio-nav button {
+    display: none;
+  }
+
+  .studio-copy {
+    bottom: 124px;
+  }
+
+  .studio-copy span {
+    margin-bottom: 14px;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+  }
+
+  .studio-copy h1 {
+    font-size: clamp(44px, 15vw, 64px);
+  }
+
+  .studio-copy p {
+    max-width: 300px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .quiet-carousel {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    right: auto;
+    width: min(250px, calc(100vw - 44px));
+  }
+
+  .quiet-carousel span {
+    min-width: 76px;
+  }
+
+  .quiet-carousel button {
+    min-width: 52px;
+  }
+
+  .slide-dots {
+    right: 22px;
+    overflow: hidden;
+  }
+
+  .slide-dots button {
+    width: 34px;
+  }
+
+  .slide-dots button::after {
+    width: 20px;
+  }
+
+  .slide-dots button.active::after {
+    width: 32px;
+  }
+}

@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BonsAi Studio - premium hero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #062c25;
+      --green: #073d32;
+      --green-2: #0f5b45;
+      --paper: #fffefb;
+      --gold: #c9a23f;
+      --gold-2: #e3c665;
+      --line: rgba(10, 57, 49, 0.12);
+      --shadow: 0 30px 90px rgba(8, 46, 38, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "DM Sans", system-ui, sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      min-height: 100vh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 3% 48%, rgba(111, 148, 121, 0.18), transparent 23rem),
+        radial-gradient(circle at 90% 30%, rgba(201, 162, 63, 0.13), transparent 28rem),
+        linear-gradient(180deg, #fffefb 0%, #f5faf7 58%, #e8f1ec 100%);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      padding: 34px clamp(22px, 5vw, 76px) 0;
+      isolation: isolate;
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(to right, rgba(201, 162, 63, 0.18) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(201, 162, 63, 0.13) 1px, transparent 1px);
+      background-size: 7.4rem 7.4rem;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 96%);
+    }
+
+    .arc {
+      position: absolute;
+      right: -12vw;
+      top: 7rem;
+      width: min(62vw, 880px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(201, 162, 63, 0.28);
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+    .arc::before,
+    .arc::after {
+      content: "";
+      position: absolute;
+      inset: 14%;
+      border: 1px solid rgba(201, 162, 63, 0.18);
+      border-radius: 50%;
+    }
+
+    .arc::after {
+      inset: 31%;
+      border-color: rgba(7, 61, 50, 0.08);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      height: 80px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: max-content;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 54px;
+      color: var(--green);
+    }
+
+    .mark svg { width: 100%; height: 100%; }
+
+    .brand span:last-child {
+      display: block;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(27px, 3vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(22px, 4vw, 58px);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    nav a {
+      position: relative;
+      padding: 28px 0;
+    }
+
+    nav a:first-child::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 10px;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    .hero-body {
+      display: grid;
+      grid-template-columns: minmax(430px, 0.95fr) minmax(480px, 1.05fr);
+      align-items: center;
+      gap: clamp(28px, 4vw, 72px);
+      min-height: calc(100vh - 80px);
+      padding: 32px 0 126px;
+    }
+
+    .copy {
+      padding-left: clamp(0px, 2vw, 24px);
+      max-width: 710px;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(48px, 5.1vw, 78px);
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      font-weight: 700;
+    }
+
+    h1 span { color: var(--green-2); }
+
+    .copy p {
+      margin: 26px 0 32px;
+      max-width: 560px;
+      color: #3d5a52;
+      font-size: clamp(17px, 1.55vw, 21px);
+      line-height: 1.68;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 13px;
+      min-height: 64px;
+      padding: 0 30px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+
+    .button.primary {
+      min-width: 260px;
+      color: #fff;
+      background: linear-gradient(135deg, #073d32, #0c5b42);
+      box-shadow: 0 18px 38px rgba(7, 61, 50, 0.22);
+    }
+
+    .button.secondary {
+      min-width: 248px;
+      color: var(--green);
+      background: rgba(255, 254, 251, 0.72);
+      border-color: rgba(152, 113, 23, 0.55);
+    }
+
+    .button svg { width: 22px; height: 22px; color: var(--gold-2); }
+
+    .visual {
+      position: relative;
+      min-height: min(710px, 72vh);
+    }
+
+    canvas {
+      position: absolute;
+      inset: -40px -24px 0 -80px;
+      width: calc(100% + 104px);
+      height: calc(100% + 40px);
+      filter: drop-shadow(var(--shadow));
+    }
+
+    .caption {
+      position: absolute;
+      right: 8%;
+      bottom: 13%;
+      width: min(310px, 42vw);
+      padding: 18px 20px;
+      border-left: 2px solid var(--gold);
+      color: #31554b;
+      background: rgba(255, 254, 251, 0.72);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 20px 60px rgba(8, 46, 38, 0.08);
+    }
+
+    .caption b {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--green);
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .caption span {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .next-strip {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      min-height: 118px;
+      background: rgba(232, 241, 236, 0.78);
+      border-top: 1px solid rgba(201, 162, 63, 0.35);
+      transform: skewY(-2.2deg);
+      transform-origin: bottom left;
+    }
+
+    .next-strip div {
+      padding: 34px clamp(24px, 5vw, 86px);
+      border-right: 1px solid rgba(7, 61, 50, 0.09);
+      transform: skewY(2.2deg);
+    }
+
+    .next-strip span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+    }
+
+    .next-strip b {
+      color: var(--green);
+      font-size: clamp(16px, 1.5vw, 21px);
+    }
+
+    @media (max-width: 960px) {
+      .hero { padding-inline: 22px; }
+      header { height: auto; padding: 18px 0; }
+      nav { gap: 18px; font-size: 14px; }
+      .hero-body {
+        grid-template-columns: 1fr;
+        min-height: 0;
+        padding-top: 60px;
+      }
+      .visual {
+        min-height: 500px;
+        margin-top: -24px;
+      }
+      canvas { inset: -30px -42px 0 -42px; width: calc(100% + 84px); }
+      .caption { right: 0; bottom: 8%; }
+    }
+
+    @media (max-width: 680px) {
+      header { align-items: flex-start; }
+      nav {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 8px 18px;
+      }
+      nav a { padding: 8px 0; }
+      nav a:first-child::after { bottom: 0; }
+      .brand span:last-child { font-size: 27px; }
+      .mark { width: 40px; height: 45px; }
+      h1 { font-size: clamp(44px, 13vw, 64px); }
+      .copy p { margin-block: 22px 28px; }
+      .button { width: 100%; min-width: 0; }
+      .visual { min-height: 430px; }
+      .caption {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        margin-top: 360px;
+      }
+      .next-strip {
+        position: relative;
+        grid-template-columns: 1fr;
+        transform: none;
+        margin-inline: -22px;
+      }
+      .next-strip div { transform: none; padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="grid" aria-hidden="true"></div>
+      <div class="arc" aria-hidden="true"></div>
+      <header>
+        <a class="brand" href="#">
+          <span class="mark" aria-hidden="true">
+            <svg viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M32 3 58 18v36L32 69 6 54V18L32 3Z" stroke="currentColor" stroke-width="3"/>
+              <path d="M32 18v34M20 51h24M23 30c6-9 13-9 19 0-7 2-14 2-19 0Zm-8 13c9-10 19-10 28 0-11 3-21 3-28 0Zm21-2c8-9 17-9 25 0-9 3-17 3-25 0Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span>BonsAi Studio</span>
+        </a>
+        <nav aria-label="Główna nawigacja">
+          <a href="#">Start</a>
+          <a href="#uslugi">Usługi</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#kontakt">Kontakt</a>
+        </nav>
+      </header>
+
+      <div class="hero-body">
+        <div class="copy">
+          <h1>Strony, aplikacje i AI, <span>które pomagają firmom rosnąć</span></h1>
+          <p>Projektujemy cyfrowe systemy z mocnymi korzeniami: szybkie strony, aplikacje i automatyzacje, które pracują dla marki długo po pierwszym kliknięciu.</p>
+          <div class="actions">
+            <a class="button primary" href="#kontakt">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V9m0 10h10m-7-4 4-4 3 3 6-8m0 0h-5m5 0v5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Bezpłatna analiza
+            </a>
+            <a class="button secondary" href="#portfolio">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" stroke="currentColor" stroke-width="2"/><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="2"/></svg>
+              Zobacz realizacje
+            </a>
+          </div>
+        </div>
+
+        <div class="visual">
+          <canvas id="bonsai" aria-label="Animowany geometryczny bonsai"></canvas>
+          <div class="caption">
+            <b>Growth system</b>
+            <span>Każda gałąź to etap: strategia, projekt, kod, SEO i automatyzacje połączone w jeden stabilny ekosystem.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="next-strip" aria-label="Zakres usług">
+        <div><span>01</span><b>Strategia i projekt UX</b></div>
+        <div><span>02</span><b>Strony, sklepy i aplikacje</b></div>
+        <div><span>03</span><b>AI, SEO i automatyzacje</b></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("bonsai");
+    const ctx = canvas.getContext("2d");
+    const dprLimit = 2;
+    let width = 0;
+    let height = 0;
+    let start = performance.now() - 4300;
+    let mouse = { x: 0.5, y: 0.5 };
+
+    const rand = (seed) => {
+      let t = seed + 0x6D2B79F5;
+      return () => {
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    };
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, dprLimit);
+      width = Math.max(1, rect.width);
+      height = Math.max(1, rect.height);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function polygon(points, fill, stroke, lineWidth = 1) {
+      ctx.beginPath();
+      points.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+      ctx.closePath();
+      ctx.fillStyle = fill;
+      ctx.fill();
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = lineWidth;
+        ctx.stroke();
+      }
+    }
+
+    function branch(x, y, len, angle, depth, sway, progress) {
+      const growthStart = depth * 0.09;
+      const growth = Math.max(0, Math.min(1, (progress - growthStart) / 0.35));
+      if (growth <= 0) return;
+      const eased = 1 - Math.pow(1 - growth, 3);
+      const a = angle + sway * (0.18 + depth * 0.04);
+      const x2 = x + Math.cos(a) * len * eased;
+      const y2 = y + Math.sin(a) * len * eased;
+      const nx = Math.cos(a + Math.PI / 2);
+      const ny = Math.sin(a + Math.PI / 2);
+      const w1 = Math.max(4, 30 - depth * 4.8);
+      const w2 = Math.max(1.8, w1 * 0.45);
+      const trunkA = [[x + nx*w1, y + ny*w1], [x2 + nx*w2, y2 + ny*w2], [x2, y2], [x, y]];
+      const trunkB = [[x, y], [x2, y2], [x2 - nx*w2, y2 - ny*w2], [x - nx*w1, y - ny*w1]];
+      polygon(trunkA, depth < 2 ? "#1b3d32" : "#254f3b", "rgba(228,198,101,.5)", 0.8);
+      polygon(trunkB, depth < 2 ? "#0d2d27" : "#15392e", "rgba(228,198,101,.42)", 0.8);
+
+      if (depth < 5) {
+        branch(x2, y2, len * 0.68, a - 0.62 + depth * 0.055, depth + 1, sway, progress);
+        branch(x2, y2, len * 0.72, a + 0.56 - depth * 0.045, depth + 1, sway, progress);
+        if (depth === 1 || depth === 2) branch(x2, y2, len * 0.54, a + 0.05, depth + 1, sway, progress);
+      } else {
+        leaves(x2, y2, 82, a, progress);
+      }
+    }
+
+    function leaves(cx, cy, radius, angle, progress) {
+      const r = rand(Math.round(cx * 7 + cy * 3));
+      const leafProgress = Math.max(0, Math.min(1, (progress - 0.58) / 0.34));
+      if (leafProgress <= 0) return;
+      const scale = 0.35 + leafProgress * 0.65;
+      for (let i = 0; i < 14; i++) {
+        const theta = angle + (i / 14) * Math.PI * 2 + (r() - 0.5) * 0.38;
+        const distance = radius * (0.24 + r() * 0.78) * scale;
+        const x = cx + Math.cos(theta) * distance * 1.4;
+        const y = cy + Math.sin(theta) * distance * 0.52;
+        const size = (22 + r() * 30) * scale;
+        const hue = 118 + r() * 34;
+        const light = 28 + r() * 20;
+        const p1 = [x + Math.cos(theta) * size, y + Math.sin(theta) * size * 0.35];
+        const p2 = [x + Math.cos(theta + 2.25) * size * 0.72, y + Math.sin(theta + 2.25) * size * 0.5];
+        const p3 = [x + Math.cos(theta - 2.25) * size * 0.72, y + Math.sin(theta - 2.25) * size * 0.5];
+        polygon([p1, p2, p3], `hsl(${hue} 35% ${light}%)`, "rgba(224,196,99,.58)", 0.9);
+      }
+    }
+
+    function pot(cx, y) {
+      const w = Math.min(width * 0.68, 650);
+      const h = w * 0.22;
+      polygon([[cx-w*.52,y-h*.72],[cx+w*.52,y-h*.72],[cx+w*.43,y],[cx-w*.43,y]], "#7fa293", "rgba(201,162,63,.75)", 2);
+      polygon([[cx-w*.45,y-h*.72],[cx,y-h*.47],[cx-w*.38,y]], "#668b7d");
+      polygon([[cx,y-h*.47],[cx+w*.45,y-h*.72],[cx+w*.38,y]], "#9ab7a9");
+      polygon([[cx-w*.56,y-h*.82],[cx+w*.56,y-h*.82],[cx+w*.51,y-h*.68],[cx-w*.51,y-h*.68]], "#f8f2dc", "rgba(201,162,63,.8)", 1.5);
+      ctx.beginPath();
+      ctx.ellipse(cx, y-h*.78, w*.44, h*.12, 0, 0, Math.PI * 2);
+      ctx.fillStyle = "#24352d";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(cx, y + 22, w*.36, 18, 0, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(6,44,37,.13)";
+      ctx.fill();
+    }
+
+    function rocks(cx, y, progress) {
+      const positions = [[-205, -78, 50], [-146, -92, 36], [214, -70, 42], [268, -78, 27]];
+      positions.forEach(([ox, oy, s]) => {
+        const x = cx + ox;
+        const yy = y + oy;
+        polygon([[x-s,yy+s*.45],[x-s*.44,yy-s*.7],[x+s*.26,yy-s],[x+s,yy+s*.5]], "#536d64", "rgba(255,255,255,.25)", 1);
+        polygon([[x-s*.44,yy-s*.7],[x+s*.26,yy-s],[x,yy+s*.42]], "#2f4941");
+        polygon([[x+s*.26,yy-s],[x+s,yy+s*.5],[x,yy+s*.42]], "#708b80");
+      });
+      for (let i = 0; i < 90; i++) {
+        const r = rand(i * 99)();
+        const x = cx - 280 + (i * 47 % 560);
+        const yy = y - 83 + Math.sin(i) * 12 + r * 16;
+        ctx.beginPath();
+        ctx.arc(x, yy, 1.8 + r * 3, 0, Math.PI * 2);
+        ctx.fillStyle = i % 3 ? "#5e7f47" : "#78955e";
+        ctx.globalAlpha = 0.25 + progress * 0.55;
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function draw(now) {
+      ctx.clearRect(0, 0, width, height);
+      const progress = Math.min(1, (now - start) / 4300);
+      const idle = now * 0.001;
+      const sway = Math.sin(idle * 0.85) * 0.16 + (mouse.x - 0.5) * 0.12;
+      const cx = width * 0.53;
+      const ground = height * 0.84;
+
+      const glow = ctx.createRadialGradient(cx, height * 0.45, 0, cx, height * 0.45, width * 0.5);
+      glow.addColorStop(0, "rgba(201,162,63,.11)");
+      glow.addColorStop(0.42, "rgba(7,61,50,.06)");
+      glow.addColorStop(1, "rgba(7,61,50,0)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, width, height);
+
+      pot(cx, ground);
+      rocks(cx, ground, progress);
+      branch(cx, ground - 85, Math.min(width, height) * 0.25, -Math.PI / 2.02, 0, sway, progress);
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener("resize", resize);
+    canvas.addEventListener("pointermove", (event) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse = {
+        x: (event.clientX - rect.left) / rect.width,
+        y: (event.clientY - rect.top) / rect.height
+      };
+    });
+    canvas.addEventListener("click", () => { start = performance.now(); });
+    resize();
+    requestAnimationFrame(draw);
+  </script>
+</body>
+</html>
