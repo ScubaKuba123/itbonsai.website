@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Activity, Brain, Check, ChevronRight, CircleAlert, Database, LockKeyhole, Mail, Pause, Play, Send, Server, Settings, Sparkles, Users } from 'lucide-react';
+import { Activity, Brain, Check, ChevronRight, CircleAlert, CircleDollarSign, Database, Gauge, LockKeyhole, Mail, Pause, Play, Send, Server, Settings, Sparkles, Users } from 'lucide-react';
 import { YgrassilRootScene } from './YgrassilPremiumScene';
 import type { Autonomy, SystemState } from './YgrassilPremiumScene';
 import './ygrassil.css';
 
-const nav = ['Dashboard', 'Leads', 'Outreach', 'Analytics', 'System'] as const;
+const nav = ['Dashboard', 'Leads', 'Outreach', 'Analytics'] as const;
+type PrimaryNav = (typeof nav)[number];
+type ActiveView = PrimaryNav | 'System';
+
 const metrics = [
   { label: 'Leads in pipeline', value: '2,843', icon: Users },
   { label: 'Emails sent', value: '987', icon: Mail },
   { label: 'Replies received', value: '143', icon: Send },
   { label: 'Meetings booked', value: '12', icon: Check },
+  { label: 'Success rate', value: '14.5%', icon: Gauge },
+  { label: 'Pipeline value', value: '$96K', icon: CircleDollarSign },
 ] as const;
 const autonomyModes: Autonomy[] = ['ROOT', 'BRANCH', 'LEAF'];
 type ServiceName = 'DATABASE' | 'AI' | 'SMTP' | 'IMAP' | 'OUTBOUND';
@@ -93,7 +98,7 @@ function LeafMark() {
 
 export function YgrassilPremiumHost() {
   const [paused, setPaused] = useState(false);
-  const [activeNav, setActiveNav] = useState<(typeof nav)[number]>('Dashboard');
+  const [activeNav, setActiveNav] = useState<ActiveView>('Dashboard');
   const [focusedStage, setFocusedStage] = useState('QUALIFY');
   const [autonomy, setAutonomy] = useState<Autonomy>('BRANCH');
   const state: SystemState = paused ? 'IDLE' : activeNav === 'Analytics' ? 'PROCESSING' : activeNav === 'Outreach' ? 'WAITING' : 'WORKING';
@@ -104,7 +109,7 @@ export function YgrassilPremiumHost() {
     <header className="yg-topbar">
       <div className="yg-brand"><span><LeafMark /></span><div><b>YGRASSIL</b><small>Autonomous Sales Engine</small></div></div>
       <nav aria-label="Primary navigation">{nav.map((item) => <button key={item} type="button" className={activeNav === item ? 'is-active' : ''} onClick={() => setActiveNav(item)}>{item}</button>)}</nav>
-      <div className="yg-system-pill"><i /> {paused ? 'Paused' : 'Online'} <button type="button" aria-label="Notifications"><CircleAlert /></button></div>
+      <div className="yg-system-pill"><i /> {paused ? 'Paused' : 'Online'} <button type="button" aria-label="Open system status" aria-pressed={activeNav === 'System'} onClick={() => setActiveNav('System')}><CircleAlert /></button></div>
     </header>
 
     <main className="yg-hero">

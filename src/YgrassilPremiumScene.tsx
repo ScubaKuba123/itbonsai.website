@@ -1,72 +1,47 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import type { ComponentType, SVGProps } from 'react';
+import { BarChart3, Bot, Clock3, FileText, MessageCircle, Search, Send, Target } from 'lucide-react';
+import { YgrassilGardenScene } from './YgrassilGardenScene';
 
 export type Autonomy = 'ROOT' | 'BRANCH' | 'LEAF';
 export type SystemState = 'IDLE' | 'WORKING' | 'PROCESSING' | 'WAITING' | 'BLOCKED' | 'SUCCESSFUL';
 
-const stages = [
-  ['DISCOVER', '2,843', 'Completed', 'discover'],
-  ['ANALYZE', '643', 'Completed', 'analyze'],
-  ['QUALIFY', '452', 'In progress', 'qualify'],
-  ['STRATEGY', '312', 'In progress', 'strategy'],
-  ['PROPOSAL', '287', 'Waiting', 'proposal'],
-  ['OUTREACH', '337', 'Waiting', 'outreach'],
-  ['FOLLOW-UP', '61', 'Waiting', 'followup'],
-  ['REPLY', '101', 'Waiting', 'reply'],
-] as const;
+type StageStatus = 'Completed' | 'In progress' | 'Waiting';
+type StageConfig = {
+  label: string;
+  value: string;
+  status: StageStatus;
+  id: string;
+  Icon: ComponentType<SVGProps<SVGSVGElement>>;
+};
 
-const paths = [
-  [[5, 70], [21, 62], [35, 52], [50, 46], [66, 51], [86, 57], [97, 67]],
-  [[13, 45], [30, 40], [48, 31], [63, 38], [75, 53], [88, 70]],
-  [[18, 79], [31, 72], [43, 68], [58, 70], [72, 78], [91, 82]],
-  [[38, 57], [45, 72], [53, 83], [61, 70], [66, 55], [59, 41]],
-] as const;
+const stages: StageConfig[] = [
+  { label: 'Discover', value: '2,843', status: 'Completed', id: 'discover', Icon: Search },
+  { label: 'Analyze', value: '643', status: 'Completed', id: 'analyze', Icon: BarChart3 },
+  { label: 'Qualify', value: '452', status: 'In progress', id: 'qualify', Icon: Target },
+  { label: 'Strategy', value: '312', status: 'In progress', id: 'strategy', Icon: Bot },
+  { label: 'Proposal', value: '287', status: 'Waiting', id: 'proposal', Icon: FileText },
+  { label: 'Outreach', value: '337', status: 'Waiting', id: 'outreach', Icon: Send },
+  { label: 'Follow-up', value: '61', status: 'Waiting', id: 'followup', Icon: Clock3 },
+  { label: 'Reply', value: '101', status: 'Waiting', id: 'reply', Icon: MessageCircle },
+];
 
 const flowStage = (state: SystemState) =>
-  ({ IDLE: '', WORKING: 'DISCOVER', PROCESSING: 'ANALYZE', WAITING: 'QUALIFY', BLOCKED: 'PROPOSAL', SUCCESSFUL: 'REPLY' })[state];
-
-const pointOnPath = (route: readonly (readonly [number, number])[], t: number) => {
-  const scaled = t * (route.length - 1);
-  const index = Math.min(route.length - 2, Math.floor(scaled));
-  const local = scaled - index;
-  const [x1, y1] = route[index];
-  const [x2, y2] = route[index + 1];
-  return [x1 + (x2 - x1) * local, y1 + (y2 - y1) * local] as const;
-};
-
-const flowKeyframes = (route: readonly (readonly [number, number])[], phase: number) => {
-  const positions = Array.from({ length: 13 }, (_, step) => pointOnPath(route, (phase + step / 12) % 1));
-  return { left: positions.map(([x]) => `${x}%`), top: positions.map(([, y]) => `${y}%`) };
-};
-
-const fireflies = Array.from({ length: 44 }, (_, index) => {
-  const route = paths[index % paths.length];
-  const phase = ((index * 37) % 100) / 100;
-  const flow = flowKeyframes(route, phase);
-  return {
-    id: index,
-    flow,
-    delay: -(index % 23) * 0.55,
-    duration: 42 + (index % 9) * 3.2,
-    size: 2 + (index % 5) * 0.7,
-    tone: index % 4 === 0 ? 'green' : index % 6 === 0 ? 'blue' : 'gold',
-    streak: index % 10 === 0,
-  };
-});
+  ({ IDLE: '', WORKING: 'Discover', PROCESSING: 'Analyze', WAITING: 'Qualify', BLOCKED: 'Proposal', SUCCESSFUL: 'Reply' })[state];
 
 export function YgrassilRootScene({ state, autonomy, onSelect }: { state: SystemState; autonomy: Autonomy; onSelect: (stage: string) => void }) {
-  const [selected, setSelected] = useState('QUALIFY');
+  const [selected, setSelected] = useState('Qualify');
   const activeStage = flowStage(state);
-  const [liveStage, setLiveStage] = useState(activeStage || 'QUALIFY');
+  const [liveStage, setLiveStage] = useState(activeStage || 'Qualify');
 
   useEffect(() => {
     if (state === 'IDLE') return undefined;
-    const start = Math.max(0, stages.findIndex(([label]) => label === (activeStage || 'QUALIFY')));
-    setLiveStage(stages[start][0]);
+    const start = Math.max(0, stages.findIndex(({ label }) => label === (activeStage || 'Qualify')));
+    setLiveStage(stages[start].label);
     const timer = window.setInterval(() => {
       setLiveStage((current) => {
-        const index = stages.findIndex(([label]) => label === current);
-        return stages[(index + 1) % stages.length][0];
+        const index = stages.findIndex(({ label }) => label === current);
+        return stages[(index + 1) % stages.length].label;
       });
     }, 2200);
     return () => window.clearInterval(timer);
@@ -75,36 +50,29 @@ export function YgrassilRootScene({ state, autonomy, onSelect }: { state: System
   const select = (stage: string) => {
     setSelected(stage);
     setLiveStage(stage);
-    onSelect(stage);
+    onSelect(stage.toUpperCase());
   };
 
   return <section className={`yg-root-scene yg-premium-scene state-${state.toLowerCase()} mode-${autonomy.toLowerCase()}`} aria-label="Ygrassil automation garden">
-    <div className="yg-premium-plate" aria-hidden="true" />
-    <motion.div className="yg-premium-haze" aria-hidden="true" animate={{ opacity: state === 'IDLE' ? 0.34 : [0.42, 0.78, 0.46] }} transition={{ duration: 5.4, repeat: Infinity, ease: 'easeInOut' }} />
-    <svg className="yg-premium-flow" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M4 70 C20 64 32 55 48 48 C66 41 82 55 98 67" />
-      <path d="M12 45 C28 42 40 30 56 32 C70 35 78 51 90 70" />
-      <path d="M18 80 C35 69 50 66 64 72 C77 78 86 82 96 79" />
-      <path className="yg-flow-current" d="M4 70 C20 64 32 55 48 48 C66 41 82 55 98 67" />
-      <path className="yg-flow-current is-second" d="M12 45 C28 42 40 30 56 32 C70 35 78 51 90 70" />
-    </svg>
-    <div className="yg-firefly-field" aria-hidden="true">
-      {fireflies.map((fly) => <motion.span
-        key={fly.id}
-        className={`yg-firefly is-${fly.tone} ${fly.streak ? 'is-streak' : ''}`}
-        style={{ left: fly.flow.left[0], top: fly.flow.top[0], width: fly.streak ? fly.size * 3.4 : fly.size, height: fly.streak ? 2 : fly.size }}
-        animate={state === 'IDLE' ? { opacity: [0.08, 0.18, 0.08], scale: [0.7, 0.94, 0.7] } : { left: fly.flow.left, top: fly.flow.top, opacity: [0.2, 0.56, 0.3, 0.7, 0.2], scale: [0.68, 1.06, 0.78, 0.98, 0.68] }}
-        transition={{ duration: fly.duration, delay: fly.delay, repeat: Infinity, ease: 'easeInOut' }}
-      />)}
-    </div>
-    <div className="yg-premium-stage-grid">
-      {stages.map(([label, value, status, id]) => {
+    <YgrassilGardenScene state={state} autonomy={autonomy} />
+    <div className="yg-premium-stage-grid" aria-label="Pipeline stages">
+      {stages.map(({ label, value, status, id, Icon }) => {
         const active = state !== 'IDLE' && (label === activeStage || label === liveStage || label === selected);
-        return <button key={label} type="button" className={`yg-premium-stage yg-premium-stage-${id} ${active ? 'is-flowing' : ''}`} aria-pressed={selected === label} onClick={() => select(label)}>
-          <span className="yg-premium-stage-dot" />
-          <strong>{label}</strong>
+        const statusText = label === liveStage && state !== 'IDLE' ? 'Routing now' : status;
+        return <button
+          key={label}
+          type="button"
+          className={`yg-premium-stage yg-premium-stage-${id} yg-stage-status-${status.toLowerCase().replaceAll(' ', '-')} ${active ? 'is-flowing' : ''}`}
+          aria-pressed={selected === label}
+          onClick={() => select(label)}
+        >
+          <span className="yg-premium-stage-icon"><Icon aria-hidden="true" /></span>
+          <span className="yg-premium-stage-copy">
+            <strong>{label}</strong>
+            <small>{statusText}</small>
+          </span>
           <b>{value}</b>
-          <small>{label === liveStage && state !== 'IDLE' ? 'Routing now' : status}</small>
+          <span className="yg-premium-stage-dot" aria-hidden="true" />
         </button>;
       })}
     </div>
