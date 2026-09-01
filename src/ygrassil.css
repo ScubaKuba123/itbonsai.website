@@ -202,9 +202,8 @@ button { font: inherit; color: inherit; }
 
 .yg-root-scene {
   position: relative;
-  width: min(100vw, calc(100dvh * 1.75));
-  height: min(100dvh, calc(100vw / 1.75));
-  aspect-ratio: 7 / 4;
+  width: 100vw;
+  height: 100dvh;
   overflow: hidden;
   background: #050508;
   box-shadow: 0 0 120px rgba(0, 0, 0, .62);
@@ -221,15 +220,14 @@ button { font: inherit; color: inherit; }
 
 .yg-premium-plate {
   z-index: 0;
-  background: url('/ygrassil-forest.png') center / 100% 100% no-repeat;
-  filter: saturate(1.12) contrast(1.04) brightness(1.1);
-  animation: yg-garden-breathe 14s ease-in-out infinite;
+  background: url('/ygrassil-reference-v2.png') center / contain no-repeat;
 }
 
-.yg-premium-haze {
-  z-index: 1;
-  background: radial-gradient(circle at 48% 52%, rgba(255, 227, 118, .1), transparent 24%), linear-gradient(180deg, rgba(5, 5, 8, .01), transparent 52%, rgba(5, 5, 8, .06));
-  mix-blend-mode: screen;
+.yg-premium-haze { display: none; }
+
+.yg-premium-flow,
+.yg-firefly-field {
+  display: none;
 }
 
 .yg-premium-flow {
@@ -262,9 +260,7 @@ button { font: inherit; color: inherit; }
 
 .yg-premium-flow .yg-flow-current.is-second { animation-duration: 34s; animation-delay: -8s; }
 
-.yg-firefly-field {
-  z-index: 3;
-}
+.yg-firefly-field { z-index: 3; }
 
 .yg-firefly {
   position: absolute;
@@ -324,19 +320,22 @@ button { font: inherit; color: inherit; }
 
 .yg-premium-stage > * { opacity: 0; }
 
-.yg-premium-stage:hover,
-.yg-premium-stage:focus-visible {
+.yg-premium-stage:hover {
   outline: 0;
-  transform: translateY(-2px);
-  border-color: rgba(229, 223, 95, .72);
-  background: rgba(229, 223, 95, .045);
-  box-shadow: 0 0 24px rgba(229, 223, 95, .16), inset 0 0 18px rgba(255, 244, 175, .08);
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
 }
 
 .yg-premium-stage.is-flowing {
-  border-color: rgba(229, 223, 95, .2);
-  background: rgba(229, 223, 95, .015);
-  box-shadow: 0 0 13px rgba(229, 223, 95, .08);
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.yg-premium-stage:focus-visible {
+  outline: 2px solid #c9de4d;
+  outline-offset: 2px;
 }
 
 .yg-premium-stage-dot {
@@ -370,14 +369,14 @@ button { font: inherit; color: inherit; }
   font-weight: 500;
 }
 
-.yg-premium-stage-discover { left: 2.2%; top: 29.5%; }
-.yg-premium-stage-analyze { left: 29.5%; top: 27%; }
-.yg-premium-stage-qualify { left: 39%; top: 13%; }
-.yg-premium-stage-strategy { left: 58%; top: 15.6%; }
-.yg-premium-stage-proposal { left: 59%; top: 48%; }
-.yg-premium-stage-outreach { right: 4.5%; top: 40%; }
-.yg-premium-stage-followup { left: 2.5%; top: 62%; }
-.yg-premium-stage-reply { left: 63%; top: 71%; }
+.yg-premium-stage-discover { left: 15.8%; top: 15.7%; }
+.yg-premium-stage-analyze { left: 27%; top: 25.7%; }
+.yg-premium-stage-qualify { left: 45.2%; top: 6.8%; }
+.yg-premium-stage-strategy { left: 63.2%; top: 25.6%; }
+.yg-premium-stage-proposal { left: 48.7%; top: 42.5%; }
+.yg-premium-stage-outreach { right: 2.6%; top: 27.8%; }
+.yg-premium-stage-followup { left: 2.4%; top: 48.7%; }
+.yg-premium-stage-reply { left: 65.8%; top: 50.4%; }
 
 .yg-overview {
   position: fixed;
@@ -387,6 +386,20 @@ button { font: inherit; color: inherit; }
   min-width: 310px;
   border-radius: 8px;
   padding: 17px 19px;
+}
+
+/* The approved reference is the complete desktop composition. Keep the live
+   controls as aligned interaction targets without drawing duplicate chrome. */
+.yg-site > .yg-topbar,
+.yg-site > .yg-commandbar {
+  opacity: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.yg-site .yg-overview {
+  display: none;
 }
 
 .yg-overview-head,
@@ -778,8 +791,10 @@ button { font: inherit; color: inherit; }
 
 @media (max-width: 840px) {
   .yg-site {
-    display: block;
-    padding: 84px 12px 96px;
+    display: grid;
+    min-height: 100dvh;
+    padding: 0;
+    place-items: center;
   }
 
   .yg-topbar {
@@ -815,8 +830,13 @@ button { font: inherit; color: inherit; }
     width: 100%;
     height: auto;
     margin: 0 auto;
-    border: 1px solid rgba(231, 194, 96, .18);
-    border-radius: 10px;
+    aspect-ratio: 1672 / 941;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .yg-premium-plate {
+    background-size: contain;
   }
 
   .yg-premium-stage-grid {
@@ -863,7 +883,7 @@ button { font: inherit; color: inherit; }
 
 @media (max-width: 520px) {
   .yg-site {
-    padding-inline: 8px;
+    padding-inline: 0;
   }
 
   .yg-topbar {

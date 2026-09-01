@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Activity, Brain, Check, ChevronRight, CircleAlert, Database, LockKeyhole, Mail, Pause, Play, Send, Server, Settings, Sparkles, Users } from 'lucide-react';
+import { Activity, Brain, Check, ChevronRight, CircleAlert, Database, LockKeyhole, Mail, Pause, Play, Send, Server, Settings, Users } from 'lucide-react';
 import { YgrassilRootScene } from './YgrassilPremiumScene';
 import type { Autonomy, SystemState } from './YgrassilPremiumScene';
 import './ygrassil.css';
 
-const nav = ['Dashboard', 'Leads', 'Outreach', 'Analytics', 'System'] as const;
+const nav = ['Dashboard', 'Leads', 'Outreach', 'Analytics'] as const;
+type NavItem = (typeof nav)[number] | 'System';
 const metrics = [
   { label: 'Leads in pipeline', value: '2,843', icon: Users },
   { label: 'Emails sent', value: '987', icon: Mail },
   { label: 'Replies received', value: '143', icon: Send },
   { label: 'Meetings booked', value: '12', icon: Check },
+  { label: 'Success rate', value: '28%', icon: Activity },
+  { label: 'Pipeline value', value: '€28,450', icon: Database },
 ] as const;
 const autonomyModes: Autonomy[] = ['ROOT', 'BRANCH', 'LEAF'];
 type ServiceName = 'DATABASE' | 'AI' | 'SMTP' | 'IMAP' | 'OUTBOUND';
@@ -93,8 +96,8 @@ function LeafMark() {
 
 export function YgrassilPremiumHost() {
   const [paused, setPaused] = useState(false);
-  const [activeNav, setActiveNav] = useState<(typeof nav)[number]>('Dashboard');
-  const [focusedStage, setFocusedStage] = useState('QUALIFY');
+  const [activeNav, setActiveNav] = useState<NavItem>('Dashboard');
+  const [, setFocusedStage] = useState('QUALIFY');
   const [autonomy, setAutonomy] = useState<Autonomy>('BRANCH');
   const state: SystemState = paused ? 'IDLE' : activeNav === 'Analytics' ? 'PROCESSING' : activeNav === 'Outreach' ? 'WAITING' : 'WORKING';
   const modeIndex = autonomyModes.indexOf(autonomy);
@@ -121,7 +124,6 @@ export function YgrassilPremiumHost() {
       <button type="button" className="yg-mode" onClick={cycleAutonomy}>Autopilot <b>{autonomy}</b><ChevronRight /></button>
       <div className="yg-tools"><button type="button" aria-label="Automation map" onClick={() => setActiveNav('Dashboard')}><LeafMark /></button><button type="button" aria-label="Signal monitor" onClick={() => setActiveNav('Analytics')}><Activity /></button><button type="button" aria-label="Routing settings" onClick={() => setActiveNav('System')}><Settings /></button></div>
       <div className="yg-legend"><span className="is-complete"><i />Completed</span><span className="is-progress"><i />In progress</span><span className="is-waiting"><i />Waiting</span><span className="is-blocked"><i />Blocked</span></div>
-      <div className="yg-focus"><Sparkles /> Focus: <b>{focusedStage}</b></div>
       <button type="button" className="yg-play" onClick={() => setPaused((value) => !value)} aria-label={paused ? 'Resume automation' : 'Pause automation'}>{paused ? <Play /> : <Pause />}<span>{paused ? 'Resume' : 'Pause'}</span></button>
     </footer>
   </div>;
