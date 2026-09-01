@@ -65,6 +65,17 @@ export function ForestScene({ systems, connections, automations, selection, onSe
         })}
         {connections.map((connection) => <FlowLights key={`${connection.id}-flow`} connection={connection} selected={selectedConnectionIds.includes(connection.id)} />)}
       </svg>
+      {connections.map((connection) => (
+        <button
+          key={`${connection.id}-marker`}
+          className={`forest-connection-marker status-${connection.status.toLowerCase()} ${selectedConnectionIds.includes(connection.id) ? 'is-selected' : ''}`}
+          style={{ '--x': `${connection.marker.x}%`, '--y': `${connection.marker.y}%` } as CSSProperties}
+          onClick={() => onSelect({ kind: 'connection', id: connection.id })}
+          aria-label={`${connection.trigger}: ${connection.status}`}
+        >
+          <span />
+        </button>
+      ))}
       {systems.map((system, index) => (
         <SystemTree
           key={system.id}
@@ -133,6 +144,7 @@ function SystemTree({ system, index, selected, activePath, onSelect }: { system:
       className={`forest-tree tree-${system.visualVariant} status-${system.status.toLowerCase()} ${selected ? 'is-selected' : ''} ${activePath ? 'is-in-flow' : ''}`}
       style={style}
       onClick={onSelect}
+      onPointerDown={onSelect}
       aria-pressed={selected}
       aria-label={`${system.name}, ${system.status}, health ${system.health} percent`}
       whileHover={{ y: -3 }}

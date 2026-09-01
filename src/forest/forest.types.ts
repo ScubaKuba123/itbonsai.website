@@ -31,6 +31,7 @@ export type ForestConnection = {
   nextRun: string;
   permissionMode: PermissionMode;
   path: string;
+  marker: { x: number; y: number };
 };
 
 export type ForestAutomation = {
