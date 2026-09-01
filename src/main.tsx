@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './app/globals.css';
 import { AppShell } from './components/AppShell';
-import { OfficeSunsetShell } from './components/OfficeSunsetShell';
+import { OfficeSunsetShell } from '../apps/office/src/OfficeSunsetShell';
 import { YgrassilPremiumHost } from './YgrassilPremiumHost';
 import { ForestPage } from '../apps/forest/src/ForestPage';
 const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
