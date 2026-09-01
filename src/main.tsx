@@ -4,7 +4,7 @@ import './app/globals.css';
 import { AppShell } from './components/AppShell';
 import { OfficeSunsetShell } from './components/OfficeSunsetShell';
 import { YgrassilPremiumHost } from './YgrassilPremiumHost';
-import { ForestPage } from './forest/ForestPage';
+import { ForestPage } from '../apps/forest/src/ForestPage';
 const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
 const hash = window.location.hash.toLowerCase();
 const ygrassil = pathname.startsWith('/ygrassil') || hash === '#ygrassil';
