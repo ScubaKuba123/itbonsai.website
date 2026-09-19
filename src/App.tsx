@@ -11,7 +11,7 @@ type Project={businessName:string;domainName:string;domainStatus:DomainStatus;bu
 const blank:Project={businessName:'',domainName:'',domainStatus:'idle',businessType:'',goal:'',feeling:[],style:'',palette:'',font:'',sections:['Hero','Services','About','Contact'],features:[],headline:'',subheadline:'',about:'',cta:'Contact us',contact:'',socialLinks:{},pictureIds:[]},STORE='bonsai-workshop-v2';
 const socialPlatforms=['Website','Instagram','Facebook','TikTok','YouTube','LinkedIn','WhatsApp','Google Business','Other link'];
 const toggle=(a:string[],v:string)=>a.includes(v)?a.filter(x=>x!==v):[...a,v];
-function Brand(){return <div className="brand"><span><Leaf/> BonsAi Studio</span><small>WEB • APPS • AI</small></div>}
+function Brand(){return <div className="brand"><span><Leaf/> BonsAI Garden</span><small>DESIGN • WORKSHOP</small></div>}
 function Choice({selected,onClick,children,className=''}:{selected:boolean;onClick:()=>void;children:React.ReactNode;className?:string}){return <button className={`choice ${selected?'selected':''} ${className}`} onClick={onClick}>{children}{selected?<Check className="tick"/>:null}</button>}
 export function App(){
  const [started,setStarted]=useState(false),[step,setStep]=useState(0),[project,setProject]=useState<Project>(()=>{try{return {...blank,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch{return blank}}),[pictures,setPictures]=useState<Picture[]>([]),[help,setHelp]=useState(false),[summary,setSummary]=useState(false),[menu,setMenu]=useState(false),[saved,setSaved]=useState(false),[pulse,setPulse]=useState(0),[lang,setLang]=useState<Lang>(()=>(localStorage.getItem('bonsai-lang') as Lang)||'en');
