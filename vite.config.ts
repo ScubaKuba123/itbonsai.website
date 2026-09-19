@@ -4,5 +4,5 @@ import {resolve} from 'node:path';
 
 export default defineConfig({
   plugins:[react()],
-  build:{rollupOptions:{input:{main:resolve(__dirname,'index.html'),garden:resolve(__dirname,'garden.html')}}},
+  build:{rollupOptions:{input:{main:resolve(__dirname,'index.html'),garden:resolve(__dirname,'garden.html'),prototype:resolve(__dirname,'prototype.html')}}},
 });
